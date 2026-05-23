@@ -2,8 +2,8 @@
 
 petrov::IOguard::IOguard(std::basic_ios< char >& s):
   s_(s),
-  precision_(s.precision()),
   width_(s.width()),
+  precision_(s.precision()),
   flags_(s.flags()),
   fill_(s.fill())
 {}
@@ -74,12 +74,7 @@ std::istream& petrov::operator>>(std::istream& in, LabelIO&& dest)
     return in;
   }
 
-  std::string label;
-  in >> label;
-  if (in && label != dest.ref)
-  {
-    in.setstate(std::ios::failbit);
-  }
+  in >> dest.ref;
 
   return in;
 }
@@ -111,7 +106,7 @@ std::istream& petrov::operator>>(std::istream& in, DobleLitIO&& dest)
     in.setstate(std::ios::failbit);
   }
 
-  dest.ref;
+  dest.ref = d;
   return in;
 }
 
@@ -197,7 +192,7 @@ std::ostream& petrov::operator<<(std::ostream& out, const DataStruct& data)
   }
 
   IOguard guard(out);
-  out << "(:key1" << std::fixed << std::setprecision(1) << data.key1 << "d:";
+  out << "(:key1 " << std::fixed << std::setprecision(1) << data.key1 << "d:";
   out << "key2 '" << data.key2 << "':";
   out << "key3 \"" << data.key3 << "\":)";
 
@@ -214,5 +209,5 @@ bool petrov::operator<(const DataStruct& lhs, const DataStruct& rhs)
   {
     return lhs.key2 < rhs.key2;
   }
-  return lhs.key3 < rhs.key3;
+  return lhs.key3.length() < rhs.key3.length();
 }

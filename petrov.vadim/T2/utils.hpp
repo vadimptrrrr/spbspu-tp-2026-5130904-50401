@@ -39,11 +39,11 @@ namespace petrov
   class IOguard
   {
   public:
-    explicit IOguard(std::basic_ios< char > & s);
+    explicit IOguard(std::basic_ios< char >& s);
     ~IOguard();
 
   private:
-    std::basic_ios< char > & s_;
+    std::basic_ios< char >& s_;
     std::streamsize width_;
     std::streamsize precision_;
     std::basic_ios< char >::fmtflags flags_;
