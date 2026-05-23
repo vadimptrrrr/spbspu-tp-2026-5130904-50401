@@ -198,6 +198,9 @@ std::ostream& petrov::operator<<(std::ostream& out, const DataStruct& data)
 
   IOguard guard(out);
   out << "(:key1" << std::fixed << std::setprecision(1) << data.key1 << "d:";
+  out << "key2 '" << data.key2 << "':";
+  out << "key3 \"" << data.key3 << "\":)";
 
+  return out;
 }
 
