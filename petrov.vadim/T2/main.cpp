@@ -10,7 +10,7 @@ int main()
   using iit_t = std::istream_iterator< vt >;
   using oit_t = std::ostream_iterator< vt >;
   std::vector< vt > data;
-  
+
   while (!std::cin.eof())
   {
     std::copy(iit_t {std::cin}, iit_t {}, std::back_inserter(data));

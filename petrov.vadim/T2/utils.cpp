@@ -179,7 +179,7 @@ std::istream& petrov::operator>>(std::istream& in, DataStruct& dest)
   {
     in.setstate(std::ios::failbit);
   }
-  
+
   return in;
 }
 
