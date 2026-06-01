@@ -1,2 +1,5 @@
-int main()
-{}
+namespace petrov
+{
+  int main()
+    {}
+}
