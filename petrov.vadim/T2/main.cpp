@@ -1,0 +1,26 @@
+#include "utils.hpp"
+#include <vector>
+#include <limits>
+#include <algorithm>
+#include <iterator>
+
+int main()
+{
+  using vt = petrov::DataStruct;
+  using iit_t = std::istream_iterator< vt >;
+  using oit_t = std::ostream_iterator< vt >;
+  std::vector< vt > data;
+
+  while (!std::cin.eof())
+  {
+    std::copy(iit_t {std::cin}, iit_t {}, std::back_inserter(data));
+    if (std::cin.fail())
+    {
+      std::cin.clear(std::cin.rdstate() & ~std::ios::failbit);
+      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+    }
+  }
+
+  std::sort(data.begin(), data.end());
+  std::copy(data.begin(), data.end(), oit_t{std::cout, "\n"});
+}
