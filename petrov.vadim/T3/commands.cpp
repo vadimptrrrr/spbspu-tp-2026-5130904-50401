@@ -30,15 +30,19 @@ double petrov::detail::getArea(const Polygon& p)
     return 0.0;
   }
 
-  const auto& pts = p.points_;
-  size_t n = pts.size();
-  double sum = std::accumulate(p.points_.begin(), p.points_ .end(), 0.0,
-    [&pts, n, i = size_t(0)](double acc, const detail::Point& curr) mutable {
-      const auto& next = pts[(i + 1) % n];
-      double cross_product = static_cast< double >(curr.x_) * next.y_ - static_cast< double >(next.x_) * curr.y_;
-      ++i;
-      return acc + cross_product;
-    });
+  size_t n = p.points_.size();
+  std::vector< size_t > idxs(n);
+  std::iota(idxs.begin(), idxs.end(), 0);
+
+  std::vector< double > products;
+  products.reserve(n);
+  std::transform(idxs.begin(), idxs.end(), std::back_inserter(products), [&p, n](size_t i)
+  {
+    const auto& curr = p.points_[i];
+    const auto& next = p.points_[(i + 1) % n];
+    return static_cast< double >(curr.x_) * next.y_ - static_cast< double >(next.x_) * curr.y_;
+  });
+  double sum = std::accumulate(products.begin(), products.end(), 0.0);
 
   return std::abs(sum) / 2.0;
 }
