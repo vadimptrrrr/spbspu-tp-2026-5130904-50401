@@ -52,6 +52,7 @@ namespace petrov
 
     bool checkMatch(const Polygon& lhs, const Polygon& rhs, size_t j, bool forward);
     bool isSamePolygon(const Polygon& lhs, const Polygon& rhs);
+    bool isGarbage(std::istream& in);
   }
 }
 

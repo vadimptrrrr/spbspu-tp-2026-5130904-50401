@@ -356,7 +356,7 @@ void petrov::intersection(std::istream& in, std::ostream& out, const pvec_t& pol
 {
   Polygon p;
   in >> p;
-  if (!in || p.points_.empty())
+  if (!in || p.points_.empty() || petrov::detail::isGarbage(in))
   {
     throw std::runtime_error("invalid argument");
   }
@@ -403,7 +403,7 @@ void petrov::same(std::istream& in, std::ostream& out, const pvec_t& polygons)
 {
   Polygon p;
   in >> p;
-  if (!in || p.points_.empty())
+  if (!in || p.points_.empty() || petrov::detail::isGarbage(in))
   {
     throw std::runtime_error("invalid argument");
   }
@@ -433,4 +433,10 @@ std::istream& petrov::operator>>(std::istream& in, CommandExecuter& cmd)
     in.ignore(max, '\n');
   }
   return in;
+}
+
+bool petrov::detail::isGarbage(std::istream& in)
+{
+  in >> std::ws;
+  return !in.eof() && in.peek() != '\n';
 }
