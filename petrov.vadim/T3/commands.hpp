@@ -17,8 +17,8 @@ namespace petrov
   {
     bool hasEvenVert(const Polygon& p);
     bool hasOddVert(const Polygon& p);
-    size_t getArea(const Polygon& p);
-    size_t sumArea(const std::vector< size_t >& dst);
+    double getArea(const Polygon& p);
+    double sumArea(const std::vector< double >& dst);
   }
 }
 
