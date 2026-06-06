@@ -114,3 +114,37 @@ void petrov::area(std::istream& in, std::ostream& out, pvec_t& polygons)
     out << detail::sumArea(res) << '\n';
   }
 }
+
+void petrov::max(std::istream& in, std::ostream& out, pvec_t& polygons)
+{
+  std::string arg;
+  in >> arg;
+  if (!in || polygons.empty())
+  {
+    throw std::runtime_error("Invalid read argument");
+  }
+
+  using namespace std::placeholders;
+  IOguard guard(out);
+  out << std::fixed << std::setprecision(1);
+
+  if (arg == "AREA")
+  {
+    std::vector< double > areas;
+    areas.reserve(polygons.size());
+    std::transform(polygons.begin(), polygons.end(), std::back_inserter(areas), detail::getArea);
+    out << *std::max_element(areas.begin(), areas.end()) << '\n';
+  }
+  else if (arg == "VERTEXES")
+  {
+    std::vector< size_t > sizes;
+    sizes.reserve(polygons.size());
+    std::transform(polygons.begin(), polygons.end(), std::back_inserter(sizes),
+      [](const Polygon& p) { return p.points_.size(); });
+    out << *std::max_element(sizes.begin(), sizes.end()) << '\n';
+  }
+  else
+  {
+    throw std::runtime_error("invalid argument");
+  }
+}
