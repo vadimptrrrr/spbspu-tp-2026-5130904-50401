@@ -100,9 +100,8 @@ void petrov::area(std::istream& in, std::ostream& out, pvec_t& polygons)
     }
     catch(const std::exception& e)
     {
-      std::cerr << e.what() << '\n';
+      throw;
     }
-    
     if (n < 3)
     {
       throw std::runtime_error("invalid arg");
@@ -180,5 +179,42 @@ void petrov::min(std::istream& in, std::ostream& out, pvec_t& polygons)
   else
   {
     throw std::runtime_error("invalid argument");
+  }
+}
+
+void petrov::count(std::istream& in, std::ostream& out, pvec_t& polygons)
+{
+  std::string arg;
+  in >> arg;
+  if (!in)
+  {
+    throw std::runtime_error("Invalid read argument");
+  }
+
+  if (arg == "EVEN")
+  {
+    out << std::count_if(polygons.begin(), polygons.end(), detail::hasEvenVert) << '\n';
+  }
+  else if (arg == "ODD")
+  {
+    out << std::count_if(polygons.begin(), polygons.end(), detail::hasOddVert) << '\n';
+  }
+  else
+  {
+    using namespace std::placeholders;
+    size_t n = 0;
+    try
+    {
+      n = std::stoi(arg);
+    }
+    catch(const std::exception& e)
+    {
+      throw;
+    }
+    if (n < 3)
+    {
+      throw std::runtime_error("invalid arg");
+    }
+    out << std::count_if(polygons.begin(), polygons.end(), std::bind(detail::hasNVert, _1, n)) << '\n';
   }
 }
