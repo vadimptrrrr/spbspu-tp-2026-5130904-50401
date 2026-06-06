@@ -437,6 +437,11 @@ std::istream& petrov::operator>>(std::istream& in, CommandExecuter& cmd)
 
 bool petrov::detail::isGarbage(std::istream& in)
 {
-  in >> std::ws;
-  return !in.eof() && in.peek() != '\n';
+  std::string tail;
+  std::getline(in, tail);
+  if (!in.eof())
+  {
+    in.putback('\n');
+  }
+  return tail.find_first_not_of(" \t\r") != std::string::npos;
 }
