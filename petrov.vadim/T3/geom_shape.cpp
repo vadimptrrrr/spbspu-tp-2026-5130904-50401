@@ -109,20 +109,12 @@ void petrov::readPolygon(std::istream& is, std::vector< Polygon >& dst)
   }
 }
 
-bool petrov::detail::Point::operator>(const petrov::detail::Point& rhs) const
+bool petrov::detail::Point::operator>=(const petrov::detail::Point& rhs) const
 {
-  if (x_ != rhs.x_)
-    {
-      return x_ > rhs.x_;
-    }
-  return y_ > rhs.y_;
+  return x_ >= rhs.x_ && y_ >= rhs.y_;
 }
 
-bool petrov::detail::Point::operator<(const petrov::detail::Point& rhs) const
+bool petrov::detail::Point::operator<=(const petrov::detail::Point& rhs) const
 {
-  if (x_ != rhs.x_)
-    {
-      return x_ < rhs.x_;
-    }
-  return y_ < rhs.y_;
+  return x_ <= rhs.x_ && y_ <= rhs.y_;
 }

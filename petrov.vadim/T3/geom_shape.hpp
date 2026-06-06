@@ -12,8 +12,8 @@ namespace petrov
     struct Point
     {
       int x_, y_;
-      bool operator>(const Point& rhs) const;
-      bool operator<(const Point& rhs) const;
+      bool operator>=(const Point& rhs) const;
+      bool operator<=(const Point& rhs) const;
     };
     std::ostream& operator<<(std::ostream& os, const Point& point);
     std::istream& operator>>(std::istream& is, Point& point);

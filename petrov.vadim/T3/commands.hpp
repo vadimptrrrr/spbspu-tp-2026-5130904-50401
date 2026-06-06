@@ -15,11 +15,27 @@ namespace petrov
 
   namespace detail
   {
+    struct Segment
+    {
+      Point p1;
+      Point p2;
+    };
+
     bool hasEvenVert(const Polygon& p);
     bool hasOddVert(const Polygon& p);
     bool hasNVert(const Polygon& p, size_t count);
     double getArea(const Polygon& p);
     double sumArea(const std::vector< double >& dst);
+
+    Segment makeSegment(const Point& p1, const Point& p2);
+    int orient(const Point& a, const Point& b, const Point& c);
+    bool onSegment(const Point& a, const Point& b, const Point& p);
+    bool segmentsIntersect(const Segment& s1, const Segment& s2);
+    bool intersectsWithAny(const Segment& seg, const std::vector< Segment >& segments);
+    std::vector< Segment > getSegments(const Polygon& pol);
+    bool rayIntersectsSegment(const Point& p, const Segment& s);
+    bool isPointInPolygon(const Point& p, const Polygon& pol);
+    bool polygonsIntersect(const Polygon& lhs, const Polygon& rhs);
   }
 }
 
