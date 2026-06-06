@@ -31,8 +31,8 @@ int main(int argc, char const *argv[])
   cmds["MAX"] = petrov::max;
   cmds["MIN"] = petrov::min;
   cmds["COUNT"] = petrov::count;
-  cmds["SAME"] = petrov::intersection;
-  cmds["RECTS"] = petrov::same;
+  cmds["INTERSECTIONS"] = petrov::intersection;
+  cmds["SAME"] = petrov::same;
   petrov::CommandExecuter ce{cmds, std::cout, data};
   petrov::runExecute(std::cin, ce);
 }

@@ -1,6 +1,11 @@
 #ifndef COMMANDS_HPP
 #define COMMANDS_HPP
 
+#include <iosfwd>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <functional>
 #include "geom_shape.hpp"
 
 namespace petrov

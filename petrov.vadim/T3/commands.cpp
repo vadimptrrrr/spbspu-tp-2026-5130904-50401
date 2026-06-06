@@ -1,11 +1,15 @@
 #include "commands.hpp"
 #include <algorithm>
-#include <numeric>
-#include <string>
-#include <exception>
-#include <iomanip>
+#include <cstdlib>
 #include <functional>
+#include <iomanip>
+#include <iostream>
+#include <iterator>
+#include <limits>
+#include <numeric>
+#include <vector>
 #include "util.hpp"
+#include "geom_shape.hpp"
 
 
 bool petrov::detail::hasEvenVert(const Polygon& p)
@@ -108,7 +112,7 @@ void petrov::area(std::istream& in, std::ostream& out, const pvec_t& polygons)
     }
     pvec_t pol;
     std::vector< double > res;
-    std::copy_if(polygons.begin(), polygons.end(), pol.begin(), std::bind(detail::hasNVert, _1, n));
+    std::copy_if(polygons.begin(), polygons.end(), std::back_inserter(pol), std::bind(detail::hasNVert, _1, n));
     std::transform(pol.begin(), pol.end(), std::back_inserter(res), detail::getArea);
     out << detail::sumArea(res) << '\n';
   }
