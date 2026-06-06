@@ -36,6 +36,9 @@ namespace petrov
     bool rayIntersectsSegment(const Point& p, const Segment& s);
     bool isPointInPolygon(const Point& p, const Polygon& pol);
     bool polygonsIntersect(const Polygon& lhs, const Polygon& rhs);
+
+    bool checkMatch(const Polygon& lhs, const Polygon& rhs, size_t j, bool forward);
+    bool isSamePolygon(const Polygon& lhs, const Polygon& rhs);
   }
 }
 

@@ -362,3 +362,50 @@ void petrov::intersection(std::istream& in, std::ostream& out, pvec_t& polygons)
   out << std::count_if(polygons.begin(), polygons.end(), 
                       std::bind(detail::polygonsIntersect, std::ref(p), _1)) << '\n';
 }
+
+bool petrov::detail::checkMatch(const Polygon& lhs, const Polygon& rhs, size_t j, bool forward)
+{
+  size_t n = lhs.points_.size();
+  std::vector< size_t > idxs(n);
+  std::iota(idxs.begin(), idxs.end(), 0);
+
+  return std::all_of(idxs.begin(), idxs.end(), [&](size_t i) {
+    size_t rhs_idx = forward ? (j + i) % n : (j + n - i) % n;
+    return (lhs.points_[i].x_ - lhs.points_[0].x_ == rhs.points_[rhs_idx].x_ - rhs.points_[j].x_) &&
+           (lhs.points_[i].y_ - lhs.points_[0].y_ == rhs.points_[rhs_idx].y_ - rhs.points_[j].y_);
+  });
+}
+
+bool petrov::detail::isSamePolygon(const Polygon& lhs, const Polygon& rhs)
+{
+  if (lhs.points_.size() != rhs.points_.size())
+  {
+    return false;
+  }
+
+  size_t n = lhs.points_.size();
+  std::vector< size_t > idxs(n);
+  std::iota(idxs.begin(), idxs.end(), 0);
+
+  using namespace std::placeholders;
+  
+  bool fwd = std::any_of(idxs.begin(), idxs.end(), std::bind(checkMatch, std::cref(lhs), std::cref(rhs), _1, true));
+  bool bwd = std::any_of(idxs.begin(), idxs.end(), std::bind(checkMatch, std::cref(lhs), std::cref(rhs), _1, false));
+
+  return fwd || bwd;
+}
+
+void petrov::same(std::istream& in, std::ostream& out, pvec_t& polygons)
+{
+  Polygon p;
+  in >> p;
+  if (!in || p.points_.empty())
+  {
+    throw std::runtime_error("invalid argument");
+  }
+
+  using namespace std::placeholders;
+  
+  out << std::count_if(polygons.begin(), polygons.end(),
+                       std::bind(detail::isSamePolygon, std::ref(p), _1)) << '\n';
+}
