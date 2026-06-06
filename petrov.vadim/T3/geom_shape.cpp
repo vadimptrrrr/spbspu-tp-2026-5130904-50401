@@ -84,3 +84,27 @@ std::istream& petrov::operator>>(std::istream& is, Polygon& polygon)
   return is;
 }
 
+void petrov::readPolygon(std::istream& is, std::vector< Polygon >& dst)
+{
+  Polygon p;
+  is >> p;
+  if (is.eof() && p.points_.empty())
+  {
+    return;
+  }
+
+  if (is.fail())
+  {
+    is.clear();
+    is.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+  }
+  else if (!p.points_.empty())
+  {
+    dst.push_back(p);
+  }
+
+  if (!is.eof())
+  {
+    readPolygon(is, dst);
+  }
+}

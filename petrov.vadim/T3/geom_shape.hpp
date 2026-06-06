@@ -23,6 +23,6 @@ namespace petrov
   };
   std::ostream& operator<<(std::ostream& os, const Polygon& polygon);
   std::istream& operator>>(std::istream& is, Polygon& polygon);
-  void readPolygon(std::istream& is, Polygon& polygon);
+  void readPolygon(std::istream& is, std::vector< Polygon >& dst);
 }
 #endif
