@@ -267,7 +267,7 @@ std::vector< petrov::detail::Segment > petrov::detail::getSegments(const Polygon
 {
   std::vector< Segment > res;
   res.reserve(pol.points_.size());
-  
+
   std::transform(
     pol.points_.begin(),
     pol.points_.end() - 1,
@@ -275,7 +275,7 @@ std::vector< petrov::detail::Segment > petrov::detail::getSegments(const Polygon
     std::back_inserter(res),
     makeSegment
   );
-  
+
   res.push_back({pol.points_.back(), pol.points_.front()});
   return res;
 }
@@ -311,7 +311,7 @@ bool petrov::detail::isPointInPolygon(const Point& p, const Polygon& pol)
 
   auto segs = getSegments(pol);
   using namespace std::placeholders;
-  
+
   int intersections = std::count_if(
     segs.begin(),
     segs.end(),
@@ -358,8 +358,8 @@ void petrov::intersection(std::istream& in, std::ostream& out, const pvec_t& pol
   }
 
   using namespace std::placeholders;
-  
-  out << std::count_if(polygons.begin(), polygons.end(), 
+
+  out << std::count_if(polygons.begin(), polygons.end(),
                       std::bind(detail::polygonsIntersect, std::ref(p), _1)) << '\n';
 }
 
@@ -388,7 +388,7 @@ bool petrov::detail::isSamePolygon(const Polygon& lhs, const Polygon& rhs)
   std::iota(idxs.begin(), idxs.end(), 0);
 
   using namespace std::placeholders;
-  
+
   bool fwd = std::any_of(idxs.begin(), idxs.end(), std::bind(checkMatch, std::cref(lhs), std::cref(rhs), _1, true));
   bool bwd = std::any_of(idxs.begin(), idxs.end(), std::bind(checkMatch, std::cref(lhs), std::cref(rhs), _1, false));
 
@@ -405,7 +405,7 @@ void petrov::same(std::istream& in, std::ostream& out, const pvec_t& polygons)
   }
 
   using namespace std::placeholders;
-  
+
   out << std::count_if(polygons.begin(), polygons.end(),
                        std::bind(detail::isSamePolygon, std::ref(p), _1)) << '\n';
 }
