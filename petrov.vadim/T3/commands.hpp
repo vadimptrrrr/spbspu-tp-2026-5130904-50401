@@ -6,12 +6,20 @@
 namespace petrov
 {
   using pvec_t = std::vector< Polygon >;
-  void area(std::istream& in, std::ostream& out, pvec_t& polygons);
-  void max(std::istream& in, std::ostream& out, pvec_t& polygons);
-  void min(std::istream& in, std::ostream& out, pvec_t& polygons);
-  void count(std::istream& in, std::ostream& out, pvec_t& polygons);
-  void intersection(std::istream& in, std::ostream& out, pvec_t& polygons);
-  void same(std::istream& in, std::ostream& out, pvec_t& polygons);
+  void area(std::istream& in, std::ostream& out, const pvec_t& polygons);
+  void max(std::istream& in, std::ostream& out, const pvec_t& polygons);
+  void min(std::istream& in, std::ostream& out, const pvec_t& polygons);
+  void count(std::istream& in, std::ostream& out, const pvec_t& polygons);
+  void intersection(std::istream& in, std::ostream& out, const pvec_t& polygons);
+  void same(std::istream& in, std::ostream& out, const pvec_t& polygons);
+
+  using cmd_t = std::function< void(std::istream&, std::ostream&, const pvec_t&) >;
+  struct CommandExecuter {
+    std::unordered_map<std::string, cmd_t > cmds;
+    std::ostream& out;
+    const pvec_t& ps;
+  };
+  std::istream& operator>>(std::istream&, CommandExecuter& cmd);
 
   namespace detail
   {

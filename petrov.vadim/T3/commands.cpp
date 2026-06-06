@@ -52,7 +52,7 @@ double petrov::detail::sumArea(const std::vector< double >& dst)
   return std::accumulate(dst.begin(), dst.end(), 0.0);
 }
 
-void petrov::area(std::istream& in, std::ostream& out, pvec_t& polygons)
+void petrov::area(std::istream& in, std::ostream& out, const pvec_t& polygons)
 {
   std::string arg;
   in >> arg;
@@ -114,7 +114,7 @@ void petrov::area(std::istream& in, std::ostream& out, pvec_t& polygons)
   }
 }
 
-void petrov::max(std::istream& in, std::ostream& out, pvec_t& polygons)
+void petrov::max(std::istream& in, std::ostream& out, const pvec_t& polygons)
 {
   std::string arg;
   in >> arg;
@@ -148,7 +148,7 @@ void petrov::max(std::istream& in, std::ostream& out, pvec_t& polygons)
   }
 }
 
-void petrov::min(std::istream& in, std::ostream& out, pvec_t& polygons)
+void petrov::min(std::istream& in, std::ostream& out, const pvec_t& polygons)
 {
   std::string arg;
   in >> arg;
@@ -182,7 +182,7 @@ void petrov::min(std::istream& in, std::ostream& out, pvec_t& polygons)
   }
 }
 
-void petrov::count(std::istream& in, std::ostream& out, pvec_t& polygons)
+void petrov::count(std::istream& in, std::ostream& out, const pvec_t& polygons)
 {
   std::string arg;
   in >> arg;
@@ -348,7 +348,7 @@ bool petrov::detail::polygonsIntersect(const Polygon& lhs, const Polygon& rhs)
   return false;
 }
 
-void petrov::intersection(std::istream& in, std::ostream& out, pvec_t& polygons)
+void petrov::intersection(std::istream& in, std::ostream& out, const pvec_t& polygons)
 {
   Polygon p;
   in >> p;
@@ -395,7 +395,7 @@ bool petrov::detail::isSamePolygon(const Polygon& lhs, const Polygon& rhs)
   return fwd || bwd;
 }
 
-void petrov::same(std::istream& in, std::ostream& out, pvec_t& polygons)
+void petrov::same(std::istream& in, std::ostream& out, const pvec_t& polygons)
 {
   Polygon p;
   in >> p;
@@ -408,4 +408,25 @@ void petrov::same(std::istream& in, std::ostream& out, pvec_t& polygons)
   
   out << std::count_if(polygons.begin(), polygons.end(),
                        std::bind(detail::isSamePolygon, std::ref(p), _1)) << '\n';
+}
+
+std::istream& petrov::operator>>(std::istream& in, CommandExecuter& cmd)
+{
+  std::istream::sentry s(in);
+  if(!s)
+  {
+    return in;
+  }
+  IOguard g(in);
+  std::string cm;
+  in >> cm;
+  try {
+    cmd.cmds.at(cm)(in, cmd.out, cmd.ps);
+  } catch(...) {
+    cmd.out << "<INVALID COMMAND>\n";
+    in.clear();
+    std::streamsize max = std::numeric_limits< std::streamsize >::max();
+    in.ignore(max, '\n');
+  }
+  return in;
 }
