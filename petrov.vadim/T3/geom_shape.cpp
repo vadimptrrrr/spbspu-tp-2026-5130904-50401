@@ -8,7 +8,7 @@ std::ostream& petrov::detail::operator<<(std::ostream& os, const Point& point)
   {
     return os;
   }
-  os << "(" << point.x_ << ";" << point.y_ << "(";
+  os << "(" << point.x_ << ";" << point.y_ << ")";
   return os;
 }
 
