@@ -4,6 +4,9 @@
 #include <vector>
 #include <cstddef>
 #include <iostream>
+#include <iterator>
+#include <algorithm>
+#include <limits>
 
 namespace petrov
 {
