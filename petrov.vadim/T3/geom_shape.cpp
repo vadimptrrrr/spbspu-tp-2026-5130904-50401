@@ -117,3 +117,12 @@ bool petrov::detail::Point::operator>(const petrov::detail::Point& rhs) const
     }
   return y_ > rhs.y_;
 }
+
+bool petrov::detail::Point::operator<(const petrov::detail::Point& rhs) const
+{
+  if (x_ != rhs.x_)
+    {
+      return x_ < rhs.x_;
+    }
+  return y_ < rhs.y_;
+}
